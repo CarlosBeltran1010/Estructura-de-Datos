@@ -6,7 +6,7 @@ Lopez Chavez Fabian Uriel*/
 int main() {
 int pares[10];
 int i;
-int cuenta = 424117210; 
+int cuenta = 424109534; 
 int ultimo = cuenta % 10; 
 
 for (i = 0; i < 10; i++) {
