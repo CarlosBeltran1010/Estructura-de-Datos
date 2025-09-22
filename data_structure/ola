@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "list.h" // Asegúrate de que este archivo esté en el mismo directorio
+
+/*
+   Función para imprimir la lista (modificada para caracteres)
+*/
+static void print_list (const List *list) {
+    ListNode *node;
+    char *data; // Cambiado de int* a char*
+    int i;
+
+    fprintf(stdout, "El tamaño de la lista es %d\n", list_size(list));
+
+    i = 0;
+    node = list_head(list);
+
+    // Se recorre la lista hasta el final
+    while (node != NULL) {
+        data = list_data(node);
+        // Se imprime el dato como carácter (%c) en lugar de entero (%d)
+        fprintf(stdout, "list.node[%02d] = '%c'\n", i, *data);
+
+        i++;
+
+        // Si es el último nodo, se rompe el ciclo
+        if (list_is_tail(node))
+            break;
+        else
+            node = list_next(node);
+    }
+
+   return;
+}
+
+
+int main (int argc, char **argv) {
+    List list;
+    char *data;
+    char c;
+
+    // Inicializar la lista enlazada
+    list_init(&list, free);
+
+    fprintf(stdout, "Insertando el abecedario en la lista...\n");
+
+    // Llenar la lista con el abecedario de la 'Z' a la 'A'
+    // Como se inserta en la cabeza, el resultado será una lista ordenada de la 'A' a la 'Z'
+    for (c = 'Z'; c >= 'A'; c--) {
+
+        // Reservar memoria para un carácter
+        if ((data = (char *)malloc(sizeof(char))) == NULL)
+            return 1;
+
+        // Asignar el carácter actual del bucle
+        *data = c;
+
+        // Insertar el nodo al inicio (head) de la lista
+        if (list_ins_next(&list, NULL, data) != 0)
+            return 1;
+    }
+
+    // Imprimir la lista completa
+    print_list(&list);
+
+    // Destruir la lista para liberar la memoria
+    fprintf(stdout, "\nDestruyendo la lista.\n");
+    list_destroy(&list);
+
+    return 0;
+}
